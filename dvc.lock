@@ -1,0 +1,215 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python src/download.py
+    deps:
+    - path: src/download.py
+      hash: md5
+      md5: 3759858e3d13de4b49a3bedf60d0ba07
+      size: 1832
+    params:
+      params.yaml:
+        data.hf_dataset: AI-Lab-Makerere/beans
+        data.revision: 27aa014ce09b193e1a6f58112d4a66e0eddb69c5
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 40916347073814e70178158fea76a706.dir
+      size: 179077940
+      nfiles: 1295
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 40916347073814e70178158fea76a706.dir
+      size: 179077940
+      nfiles: 1295
+    - path: src/prepare.py
+      hash: md5
+      md5: 65af95aee9416cdf33e6160057487c52
+      size: 998
+    params:
+      params.yaml:
+        data.img_size: 224
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
+      size: 37610465
+      nfiles: 1295
+  train@simplecnn:
+    cmd: python src/train.py --model simplecnn
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
+      size: 37610465
+      nfiles: 1295
+    - path: src/data.py
+      hash: md5
+      md5: a5cf328ccdcac5deeae515bdd505295f
+      size: 733
+    - path: src/models.py
+      hash: md5
+      md5: c91fa6ba01902f83fa53adb7ef8ffa95
+      size: 1648
+    - path: src/train.py
+      hash: md5
+      md5: aeb70e41157400ff4799568c85d69f15
+      size: 4435
+    params:
+      params.yaml:
+        models.simplecnn:
+          pretrained: false
+          epochs: 40
+          lr: 0.001
+        seed: 42
+        train:
+          batch_size: 32
+          num_workers: 0
+    outs:
+    - path: metrics/train/simplecnn.json
+      hash: md5
+      md5: 3882bc80e27c04ab55f48135511c2374
+      size: 170
+    - path: models/simplecnn.pt
+      hash: md5
+      md5: ad48667a88af410c620201d1ccf8d74b
+      size: 981329
+    - path: plots/train/simplecnn.csv
+      hash: md5
+      md5: 01740fa4db5112e102327359070eb5d6
+      size: 1294
+  train@resnet18:
+    cmd: python src/train.py --model resnet18
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
+      size: 37610465
+      nfiles: 1295
+    - path: src/data.py
+      hash: md5
+      md5: a5cf328ccdcac5deeae515bdd505295f
+      size: 733
+    - path: src/models.py
+      hash: md5
+      md5: c91fa6ba01902f83fa53adb7ef8ffa95
+      size: 1648
+    - path: src/train.py
+      hash: md5
+      md5: aeb70e41157400ff4799568c85d69f15
+      size: 4435
+    params:
+      params.yaml:
+        models.resnet18:
+          pretrained: true
+          epochs: 10
+          lr: 0.0003
+        seed: 42
+        train:
+          batch_size: 32
+          num_workers: 0
+    outs:
+    - path: metrics/train/resnet18.json
+      hash: md5
+      md5: b56b2d918e89b30e144c88856250863d
+      size: 170
+    - path: models/resnet18.pt
+      hash: md5
+      md5: dfd87480a42e948e2e71d2eb331e79b9
+      size: 44791691
+    - path: plots/train/resnet18.csv
+      hash: md5
+      md5: 9a6c33747a65b829cec4d4fe6375441f
+      size: 352
+  train@mobilenet_v3:
+    cmd: python src/train.py --model mobilenet_v3
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
+      size: 37610465
+      nfiles: 1295
+    - path: src/data.py
+      hash: md5
+      md5: a5cf328ccdcac5deeae515bdd505295f
+      size: 733
+    - path: src/models.py
+      hash: md5
+      md5: c91fa6ba01902f83fa53adb7ef8ffa95
+      size: 1648
+    - path: src/train.py
+      hash: md5
+      md5: aeb70e41157400ff4799568c85d69f15
+      size: 4435
+    params:
+      params.yaml:
+        models.mobilenet_v3:
+          pretrained: true
+          epochs: 10
+          lr: 0.0005
+        seed: 42
+        train:
+          batch_size: 32
+          num_workers: 0
+    outs:
+    - path: metrics/train/mobilenet_v3.json
+      hash: md5
+      md5: 84b8d324d7826d8085e80569952a12cf
+      size: 168
+    - path: models/mobilenet_v3.pt
+      hash: md5
+      md5: 2bda724a4202e4485309d03510c82a13
+      size: 6219001
+    - path: plots/train/mobilenet_v3.csv
+      hash: md5
+      md5: 3f3d011677cd65868efbe91a26d405f4
+      size: 350
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
+      size: 37610465
+      nfiles: 1295
+    - path: models/mobilenet_v3.pt
+      hash: md5
+      md5: 2bda724a4202e4485309d03510c82a13
+      size: 6219001
+    - path: models/resnet18.pt
+      hash: md5
+      md5: dfd87480a42e948e2e71d2eb331e79b9
+      size: 44791691
+    - path: models/simplecnn.pt
+      hash: md5
+      md5: ad48667a88af410c620201d1ccf8d74b
+      size: 981329
+    - path: src/data.py
+      hash: md5
+      md5: a5cf328ccdcac5deeae515bdd505295f
+      size: 733
+    - path: src/evaluate.py
+      hash: md5
+      md5: e3e6e064e2f0373c165ca10e401aa801
+      size: 3051
+    - path: src/models.py
+      hash: md5
+      md5: c91fa6ba01902f83fa53adb7ef8ffa95
+      size: 1648
+    outs:
+    - path: metrics/test.json
+      hash: md5
+      md5: d29aedbf3a46d2d03f974bd62050fd50
+      size: 473
+    - path: plots/confusion
+      hash: md5
+      md5: 193117879de68b02b0144e34f4868409.dir
+      size: 9730
+      nfiles: 3
+    - path: reports/summary.md
+      hash: md5
+      md5: 47074fd5fc438d846efde54f7d441d74
+      size: 331
