@@ -43,9 +43,9 @@ stages:
     deps:
     - path: data/augmented
       hash: md5
-      md5: 6531076ea394b7f461055bcb6a1e3377.dir
-      size: 83857527
-      nfiles: 3102
+      md5: 1cc2c905d56c0efbde28eb0bd3545146.dir
+      size: 110863850
+      nfiles: 4136
     - path: data/processed
       hash: md5
       md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
@@ -77,24 +77,24 @@ stages:
     outs:
     - path: metrics/train/simplecnn.json
       hash: md5
-      md5: 4715c0e2cdf46333f6b12f080d5bda62
+      md5: 29e9e96d9c330a6fa36d2ae68cb7eea9
       size: 170
     - path: models/simplecnn.pt
       hash: md5
-      md5: 27f5b9317db5578f94a0faa10d2ea672
+      md5: e6a1a5e278f1112b796ae99ed6ed7adf
       size: 981329
     - path: plots/train/simplecnn.csv
       hash: md5
-      md5: 7e10d469598677ad525e91bca974264e
-      size: 1298
+      md5: 0707b7e8c6299e146ef0c865d0950b78
+      size: 1296
   train@resnet18:
     cmd: python src/train.py --model resnet18
     deps:
     - path: data/augmented
       hash: md5
-      md5: 6531076ea394b7f461055bcb6a1e3377.dir
-      size: 83857527
-      nfiles: 3102
+      md5: 1cc2c905d56c0efbde28eb0bd3545146.dir
+      size: 110863850
+      nfiles: 4136
     - path: data/processed
       hash: md5
       md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
@@ -126,24 +126,24 @@ stages:
     outs:
     - path: metrics/train/resnet18.json
       hash: md5
-      md5: fb008a760fb915d2291fcf2a96127f5c
-      size: 171
+      md5: fd3be089aaddb6b554f3f1286c708ba7
+      size: 167
     - path: models/resnet18.pt
       hash: md5
-      md5: ef3d381c72df7de301c6d132d17bc219
+      md5: 14ada2757f6864671804bb8c1548cd0a
       size: 44791691
     - path: plots/train/resnet18.csv
       hash: md5
-      md5: d69daab8bc29a4f432ae6372a7d2d9d4
-      size: 353
+      md5: 499dbebcca0cbbf10ca444fcc6e79724
+      size: 348
   train@mobilenet_v3:
     cmd: python src/train.py --model mobilenet_v3
     deps:
     - path: data/augmented
       hash: md5
-      md5: 6531076ea394b7f461055bcb6a1e3377.dir
-      size: 83857527
-      nfiles: 3102
+      md5: 1cc2c905d56c0efbde28eb0bd3545146.dir
+      size: 110863850
+      nfiles: 4136
     - path: data/processed
       hash: md5
       md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
@@ -175,16 +175,16 @@ stages:
     outs:
     - path: metrics/train/mobilenet_v3.json
       hash: md5
-      md5: 9f77fd73268c178afe83571d45fb7958
-      size: 168
+      md5: f1551e33070d90c45c5a6bf4aa903227
+      size: 170
     - path: models/mobilenet_v3.pt
       hash: md5
-      md5: 106fef6eac939ecbd0843f7166217aca
+      md5: a7cacb0882c755b648ac93ea2acc6327
       size: 6219001
     - path: plots/train/mobilenet_v3.csv
       hash: md5
-      md5: 030faf365bd3e0c440d4ebb74b0681f4
-      size: 353
+      md5: 1c1e9643b5d0e999d2a6f64fd8acce6e
+      size: 350
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -195,15 +195,15 @@ stages:
       nfiles: 1295
     - path: models/mobilenet_v3.pt
       hash: md5
-      md5: 106fef6eac939ecbd0843f7166217aca
+      md5: a7cacb0882c755b648ac93ea2acc6327
       size: 6219001
     - path: models/resnet18.pt
       hash: md5
-      md5: ef3d381c72df7de301c6d132d17bc219
+      md5: 14ada2757f6864671804bb8c1548cd0a
       size: 44791691
     - path: models/simplecnn.pt
       hash: md5
-      md5: 27f5b9317db5578f94a0faa10d2ea672
+      md5: e6a1a5e278f1112b796ae99ed6ed7adf
       size: 981329
     - path: src/data.py
       hash: md5
@@ -223,16 +223,16 @@ stages:
     outs:
     - path: metrics/test.json
       hash: md5
-      md5: de95c3d8109fa8247173b70d4beceb3b
-      size: 474
+      md5: c3e619d72ca83c1bde145741495b0e75
+      size: 473
     - path: plots/confusion
       hash: md5
-      md5: 9ff60b6fcd2029423f8b6771cde96c43.dir
-      size: 9786
+      md5: 94a7303202343a9d87f40436145cc9ff.dir
+      size: 9746
       nfiles: 3
     - path: reports/summary.md
       hash: md5
-      md5: 9d5f396d43d3d42504e985dd6f67bf46
+      md5: 6691a398408e4657d99bee456126a97c
       size: 366
   augment:
     cmd: python src/augment.py
@@ -249,7 +249,7 @@ stages:
     params:
       params.yaml:
         augment:
-          copies: 2
+          copies: 3
           rotation: 20
           flip: 0.5
           brightness: 0.2
@@ -262,10 +262,10 @@ stages:
     outs:
     - path: data/augmented
       hash: md5
-      md5: 6531076ea394b7f461055bcb6a1e3377.dir
-      size: 83857527
-      nfiles: 3102
+      md5: 1cc2c905d56c0efbde28eb0bd3545146.dir
+      size: 110863850
+      nfiles: 4136
     - path: reports/augment_examples.jpg
       hash: md5
-      md5: 03a1b6605667c91c22c33921b435b9a4
-      size: 138286
+      md5: 89b76682c4470ad84002367bd250b626
+      size: 183077
