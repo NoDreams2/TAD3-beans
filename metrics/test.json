@@ -1,23 +1,23 @@
 {
   "simplecnn": {
-    "accuracy": 0.9141,
-    "f1_macro": 0.9134,
-    "precision_macro": 0.9187,
-    "recall_macro": 0.9142,
-    "best_epoch": 39
+    "accuracy": 0.9375,
+    "f1_macro": 0.9375,
+    "precision_macro": 0.9376,
+    "recall_macro": 0.9376,
+    "best_epoch": 36
   },
   "resnet18": {
-    "accuracy": 0.9609,
-    "f1_macro": 0.9612,
-    "precision_macro": 0.9623,
-    "recall_macro": 0.9609,
-    "best_epoch": 6
+    "accuracy": 0.9688,
+    "f1_macro": 0.969,
+    "precision_macro": 0.9696,
+    "recall_macro": 0.969,
+    "best_epoch": 4
   },
   "mobilenet_v3": {
-    "accuracy": 0.9453,
-    "f1_macro": 0.9457,
-    "precision_macro": 0.9472,
-    "recall_macro": 0.9454,
-    "best_epoch": 8
+    "accuracy": 0.9531,
+    "f1_macro": 0.9534,
+    "precision_macro": 0.956,
+    "recall_macro": 0.9535,
+    "best_epoch": 10
   }
 }

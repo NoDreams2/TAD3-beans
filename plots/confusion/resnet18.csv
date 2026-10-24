@@ -66,7 +66,7 @@ bean_rust,bean_rust
 bean_rust,bean_rust
 bean_rust,bean_rust
 bean_rust,bean_rust
-bean_rust,bean_rust
+bean_rust,angular_leaf_spot
 bean_rust,bean_rust
 bean_rust,bean_rust
 bean_rust,bean_rust
@@ -105,7 +105,6 @@ healthy,healthy
 healthy,healthy
 healthy,healthy
 healthy,healthy
-healthy,bean_rust
 healthy,healthy
 healthy,healthy
 healthy,healthy
@@ -114,7 +113,8 @@ healthy,healthy
 healthy,healthy
 healthy,healthy
 healthy,healthy
-healthy,angular_leaf_spot
+healthy,healthy
+healthy,healthy
 healthy,healthy
 healthy,healthy
 healthy,healthy

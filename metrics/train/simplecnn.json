@@ -1,9 +1,9 @@
 {
-  "best_epoch": 39,
-  "best_val_loss": 0.0515,
-  "best_val_acc": 0.9774,
+  "best_epoch": 36,
+  "best_val_loss": 0.1038,
+  "best_val_acc": 0.9624,
   "epochs": 40,
-  "train_images": 3102,
+  "train_images": 2068,
   "params": 241923,
-  "train_time_sec": 556.0
+  "train_time_sec": 347.4
 }
