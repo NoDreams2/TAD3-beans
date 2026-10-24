@@ -1,0 +1,9 @@
+# PyTorch с поддержкой видеокарты ставится отдельной командой (см. README):
+#   pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu126
+dvc>=3.50
+huggingface_hub>=0.20
+pyarrow>=14
+scikit-learn>=1.3
+pyyaml>=6
+pillow>=10
+matplotlib>=3.7

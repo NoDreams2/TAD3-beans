@@ -1,0 +1,26 @@
+# Все настраиваемые параметры проекта. Менять здесь или командой
+#   dvc exp run -S имя.параметра=значение
+seed: 42
+
+data:
+  hf_dataset: AI-Lab-Makerere/beans          # датасет на Hugging Face
+  revision: 27aa014ce09b193e1a6f58112d4a66e0eddb69c5  # зафиксированная версия датасета
+  img_size: 224                               # размер картинки после подготовки, px
+
+train:
+  batch_size: 32
+  num_workers: 0       # на Windows надёжнее 0
+
+models:                # обучаются все три модели за один запуск dvc repro
+  simplecnn:           # своя свёрточная сеть, обучается с нуля
+    pretrained: false
+    epochs: 40
+    lr: 0.001
+  resnet18:            # предобученная на ImageNet, дообучается целиком
+    pretrained: true
+    epochs: 10
+    lr: 0.0003
+  mobilenet_v3:        # лёгкая предобученная сеть (MobileNetV3-Small)
+    pretrained: true
+    epochs: 10
+    lr: 0.0005

@@ -1,0 +1,88 @@
+stages:
+  download:                      # 1. скачать датасет Beans с Hugging Face
+    cmd: python src/download.py
+    deps:
+      - src/download.py
+    params:
+      - data.hf_dataset
+      - data.revision
+    outs:
+      - data/raw
+
+  prepare:                       # 2. предобработка: привести картинки к одному размеру
+    cmd: python src/prepare.py
+    deps:
+      - src/prepare.py
+      - data/raw
+    params:
+      - data.img_size
+    outs:
+      - data/processed
+
+  train:                         # 3. обучение: одна стадия на каждую модель из params.yaml
+    foreach: ${models}
+    do:
+      cmd: python src/train.py --model ${key}
+      deps:
+        - src/train.py
+        - src/models.py
+        - src/data.py
+        - data/processed
+      params:
+        - seed
+        - train
+        - models.${key}
+      outs:
+        - models/${key}.pt
+      metrics:
+        - metrics/train/${key}.json:
+            cache: false
+      plots:
+        - plots/train/${key}.csv:
+            cache: false
+
+  evaluate:                      # 4. оценка всех моделей на тестовой части
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - src/models.py
+      - src/data.py
+      - data/processed
+      - models/simplecnn.pt
+      - models/resnet18.pt
+      - models/mobilenet_v3.pt
+    metrics:
+      - metrics/test.json:
+          cache: false
+    plots:
+      - plots/confusion:
+          cache: false
+    outs:
+      - reports/summary.md:
+          cache: false
+
+plots:
+  - Точность на проверке по эпохам:
+      x: epoch
+      y:
+        plots/train/simplecnn.csv: val_acc
+        plots/train/resnet18.csv: val_acc
+        plots/train/mobilenet_v3.csv: val_acc
+  - Ошибка на проверке по эпохам:
+      x: epoch
+      y:
+        plots/train/simplecnn.csv: val_loss
+        plots/train/resnet18.csv: val_loss
+        plots/train/mobilenet_v3.csv: val_loss
+  - plots/confusion/simplecnn.csv:
+      template: confusion
+      x: actual
+      y: predicted
+  - plots/confusion/resnet18.csv:
+      template: confusion
+      x: actual
+      y: predicted
+  - plots/confusion/mobilenet_v3.csv:
+      template: confusion
+      x: actual
+      y: predicted
