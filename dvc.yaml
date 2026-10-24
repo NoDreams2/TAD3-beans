@@ -19,7 +19,21 @@ stages:
     outs:
       - data/processed
 
-  train:                         # 3. обучение: одна стадия на каждую модель из params.yaml
+  augment:                       # 3. аугментация обучающей части -> новый датасет
+    cmd: python src/augment.py
+    deps:
+      - src/augment.py
+      - data/processed
+    params:
+      - seed
+      - data.img_size
+      - augment
+    outs:
+      - data/augmented
+      - reports/augment_examples.jpg:
+          cache: false
+
+  train:                         # 4. обучение: одна стадия на каждую модель из params.yaml
     foreach: ${models}
     do:
       cmd: python src/train.py --model ${key}
@@ -28,6 +42,7 @@ stages:
         - src/models.py
         - src/data.py
         - data/processed
+        - data/augmented
       params:
         - seed
         - train
@@ -41,7 +56,7 @@ stages:
         - plots/train/${key}.csv:
             cache: false
 
-  evaluate:                      # 4. оценка всех моделей на тестовой части
+  evaluate:                      # 5. оценка всех моделей на тестовой части
     cmd: python src/evaluate.py
     deps:
       - src/evaluate.py
@@ -51,6 +66,8 @@ stages:
       - models/simplecnn.pt
       - models/resnet18.pt
       - models/mobilenet_v3.pt
+    params:
+      - train.use_augmented
     metrics:
       - metrics/test.json:
           cache: false

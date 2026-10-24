@@ -33,15 +33,16 @@ https://huggingface.co/datasets/AI-Lab-Makerere/beans
 Схему стадий показывает команда `dvc dag`.
 
 ```
-download → prepare → train@simplecnn    ┐
-                     train@resnet18     ├→ evaluate
-                     train@mobilenet_v3 ┘
+download → prepare → augment → train@simplecnn ┐
+                         │      train@resnet18  ├→ evaluate
+                         └────→ train@mobilenet_v3 ┘
 ```
 
 | Стадия | Скрипт | Что делает | Результат |
 |---|---|---|---|
 | download | `src/download.py` | скачивает датасет с Hugging Face | `data/raw/` |
 | prepare | `src/prepare.py` | приводит фото к размеру 224×224 | `data/processed/` |
+| augment | `src/augment.py` | делает новые фото из обучающих (поворот, отражение, обрезка, яркость, контраст) | `data/augmented/`, `reports/augment_examples.jpg` |
 | train@… | `src/train.py` | обучает **все три модели** за один запуск, сохраняет лучшую эпоху | `models/*.pt`, `metrics/train/*.json`, `plots/train/*.csv` |
 | evaluate | `src/evaluate.py` | оценивает модели на тестовой части | `metrics/test.json`, `plots/confusion/`, `reports/summary.md` |
 
@@ -63,8 +64,9 @@ DVC запоминает хеши входов и выходов каждой с
 
 ## Параметры
 
-Все параметры — в `params.yaml`: размер картинок, число эпох и скорость
-обучения для каждой модели.
+Все параметры — в `params.yaml`: размер картинок, настройки аугментации,
+использовать ли аугментированные данные (`train.use_augmented`), число эпох
+и скорость обучения для каждой модели.
 
 Изменить параметр без правки файла и сразу запустить эксперимент:
 
@@ -103,6 +105,7 @@ pip install -r requirements.txt
 | Метка | Что сделано |
 |---|---|
 | `v1-original` | пайплайн, три модели обучены на исходных данных |
+| `v2-augmented` | добавлена аугментация, модели обучены на исходных + новых данных |
 
 ## Как посмотреть результаты, не запуская обучение
 

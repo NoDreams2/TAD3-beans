@@ -41,6 +41,11 @@ stages:
   train@simplecnn:
     cmd: python src/train.py --model simplecnn
     deps:
+    - path: data/augmented
+      hash: md5
+      md5: 6531076ea394b7f461055bcb6a1e3377.dir
+      size: 83857527
+      nfiles: 3102
     - path: data/processed
       hash: md5
       md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
@@ -66,24 +71,30 @@ stages:
           lr: 0.001
         seed: 42
         train:
+          use_augmented: true
           batch_size: 32
           num_workers: 0
     outs:
     - path: metrics/train/simplecnn.json
       hash: md5
-      md5: 3882bc80e27c04ab55f48135511c2374
+      md5: 4715c0e2cdf46333f6b12f080d5bda62
       size: 170
     - path: models/simplecnn.pt
       hash: md5
-      md5: ad48667a88af410c620201d1ccf8d74b
+      md5: 27f5b9317db5578f94a0faa10d2ea672
       size: 981329
     - path: plots/train/simplecnn.csv
       hash: md5
-      md5: 01740fa4db5112e102327359070eb5d6
-      size: 1294
+      md5: 7e10d469598677ad525e91bca974264e
+      size: 1298
   train@resnet18:
     cmd: python src/train.py --model resnet18
     deps:
+    - path: data/augmented
+      hash: md5
+      md5: 6531076ea394b7f461055bcb6a1e3377.dir
+      size: 83857527
+      nfiles: 3102
     - path: data/processed
       hash: md5
       md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
@@ -109,24 +120,30 @@ stages:
           lr: 0.0003
         seed: 42
         train:
+          use_augmented: true
           batch_size: 32
           num_workers: 0
     outs:
     - path: metrics/train/resnet18.json
       hash: md5
-      md5: b56b2d918e89b30e144c88856250863d
-      size: 170
+      md5: fb008a760fb915d2291fcf2a96127f5c
+      size: 171
     - path: models/resnet18.pt
       hash: md5
-      md5: dfd87480a42e948e2e71d2eb331e79b9
+      md5: ef3d381c72df7de301c6d132d17bc219
       size: 44791691
     - path: plots/train/resnet18.csv
       hash: md5
-      md5: 9a6c33747a65b829cec4d4fe6375441f
-      size: 352
+      md5: d69daab8bc29a4f432ae6372a7d2d9d4
+      size: 353
   train@mobilenet_v3:
     cmd: python src/train.py --model mobilenet_v3
     deps:
+    - path: data/augmented
+      hash: md5
+      md5: 6531076ea394b7f461055bcb6a1e3377.dir
+      size: 83857527
+      nfiles: 3102
     - path: data/processed
       hash: md5
       md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
@@ -152,21 +169,22 @@ stages:
           lr: 0.0005
         seed: 42
         train:
+          use_augmented: true
           batch_size: 32
           num_workers: 0
     outs:
     - path: metrics/train/mobilenet_v3.json
       hash: md5
-      md5: 84b8d324d7826d8085e80569952a12cf
+      md5: 9f77fd73268c178afe83571d45fb7958
       size: 168
     - path: models/mobilenet_v3.pt
       hash: md5
-      md5: 2bda724a4202e4485309d03510c82a13
+      md5: 106fef6eac939ecbd0843f7166217aca
       size: 6219001
     - path: plots/train/mobilenet_v3.csv
       hash: md5
-      md5: 3f3d011677cd65868efbe91a26d405f4
-      size: 350
+      md5: 030faf365bd3e0c440d4ebb74b0681f4
+      size: 353
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -177,15 +195,15 @@ stages:
       nfiles: 1295
     - path: models/mobilenet_v3.pt
       hash: md5
-      md5: 2bda724a4202e4485309d03510c82a13
+      md5: 106fef6eac939ecbd0843f7166217aca
       size: 6219001
     - path: models/resnet18.pt
       hash: md5
-      md5: dfd87480a42e948e2e71d2eb331e79b9
+      md5: ef3d381c72df7de301c6d132d17bc219
       size: 44791691
     - path: models/simplecnn.pt
       hash: md5
-      md5: ad48667a88af410c620201d1ccf8d74b
+      md5: 27f5b9317db5578f94a0faa10d2ea672
       size: 981329
     - path: src/data.py
       hash: md5
@@ -199,17 +217,55 @@ stages:
       hash: md5
       md5: c91fa6ba01902f83fa53adb7ef8ffa95
       size: 1648
+    params:
+      params.yaml:
+        train.use_augmented: true
     outs:
     - path: metrics/test.json
       hash: md5
-      md5: d29aedbf3a46d2d03f974bd62050fd50
-      size: 473
+      md5: de95c3d8109fa8247173b70d4beceb3b
+      size: 474
     - path: plots/confusion
       hash: md5
-      md5: 193117879de68b02b0144e34f4868409.dir
-      size: 9730
+      md5: 9ff60b6fcd2029423f8b6771cde96c43.dir
+      size: 9786
       nfiles: 3
     - path: reports/summary.md
       hash: md5
-      md5: 47074fd5fc438d846efde54f7d441d74
-      size: 331
+      md5: 9d5f396d43d3d42504e985dd6f67bf46
+      size: 366
+  augment:
+    cmd: python src/augment.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 27ff3a7bf0f94958b2aeaf3af1804f83.dir
+      size: 37610465
+      nfiles: 1295
+    - path: src/augment.py
+      hash: md5
+      md5: 7a3848e8be301a3b71d19e75d701d28d
+      size: 2895
+    params:
+      params.yaml:
+        augment:
+          copies: 2
+          rotation: 20
+          flip: 0.5
+          brightness: 0.2
+          contrast: 0.2
+          crop_scale:
+          - 0.8
+          - 1.0
+        data.img_size: 224
+        seed: 42
+    outs:
+    - path: data/augmented
+      hash: md5
+      md5: 6531076ea394b7f461055bcb6a1e3377.dir
+      size: 83857527
+      nfiles: 3102
+    - path: reports/augment_examples.jpg
+      hash: md5
+      md5: 03a1b6605667c91c22c33921b435b9a4
+      size: 138286
